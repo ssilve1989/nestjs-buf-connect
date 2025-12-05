@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
-import { Observable, Subject } from 'rxjs';
+import { type Observable, Subject } from 'rxjs';
 
 /**
  * Request/Response interfaces matching the proto definitions.

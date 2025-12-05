@@ -1,19 +1,19 @@
 import { create } from '@bufbuild/protobuf';
 import { from, Observable } from 'rxjs';
 import {
-  ExampleService,
-  type HelloRequest,
-  HelloResponseSchema,
-  type StreamRequest,
-  StreamResponseSchema,
-} from '../gen/example/v1/example_pb.js';
-import {
   ConnectBidiStreaming,
   ConnectClientStreaming,
   ConnectMethod,
   ConnectServerStreaming,
   ConnectService,
 } from '../../src/index.js';
+import {
+  ExampleService,
+  type HelloRequest,
+  HelloResponseSchema,
+  type StreamRequest,
+  StreamResponseSchema,
+} from '../gen/example/v1/example_pb.js';
 
 /**
  * Test controller demonstrating all four gRPC streaming types with NestJS decorators.
