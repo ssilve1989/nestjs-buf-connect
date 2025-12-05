@@ -6,7 +6,7 @@ import {
   HelloResponseSchema,
   type StreamRequest,
   StreamResponseSchema,
-} from '../../src/gen/example/v1/example_pb.js';
+} from '../gen/example/v1/example_pb.js';
 import {
   ConnectBidiStreaming,
   ConnectClientStreaming,

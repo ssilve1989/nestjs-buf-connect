@@ -3,7 +3,7 @@ clean: true
 plugins:
   # Generate TypeScript for the library (used in tests)
   - local: protoc-gen-es
-    out: packages/nestjs-buf-connect/src/gen
+    out: packages/nestjs-buf-connect/test/gen
     opt:
       - target=ts
 

@@ -11,6 +11,12 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "vitest run"
@@ -23,23 +29,28 @@
     "buf",
     "microservices"
   ],
-  "author": "",
-  "license": "UNLICENSED",
-  "devDependencies": {
-    "@nestjs/common": "^11.1.9",
-    "@nestjs/core": "^11.1.9",
-    "@nestjs/microservices": "^11.1.9",
-    "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.2"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssilve1989/nestjs-buf-connect.git"
   },
+  "author": "",
+  "license": "MIT",
   "peerDependencies": {
     "@nestjs/common": ">=10.0.0",
     "@nestjs/core": ">=10.0.0",
     "@nestjs/microservices": ">=10.0.0",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "@bufbuild/protobuf": "^2.0.0",
+    "@connectrpc/connect": "^2.0.0",
+    "@connectrpc/connect-node": "^2.0.0"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@nestjs/common": "^11.1.9",
+    "@nestjs/core": "^11.1.9",
+    "@nestjs/microservices": "^11.1.9",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
     "@bufbuild/protobuf": "^2.10.1",
     "@connectrpc/connect": "^2.1.1",
     "@connectrpc/connect-node": "^2.1.1"
