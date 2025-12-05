@@ -6,11 +6,11 @@
   "type": "module",
   "scripts": {
     "generate": "buf generate",
-    "ci": "biome ci --diagnostic-level=error .",
-    "check": "biome check --diagnostic-level=error .",
     "commit": "cz",
-    "format": "biome format --write .",
     "lint": "biome lint --diagnostic-level=error .",
+    "lint:ci": "biome ci --diagnostic-level=error .",
+    "lint:check": "biome check --diagnostic-level=error .",
+    "lint:format": "biome format --write .",
     "test": "vitest --passWithNoTests",
     "prepare": "husky"
   },
@@ -18,9 +18,9 @@
   "author": "steven.m.silvestri@gmail.com",
   "license": "UNLICENSED",
   "devDependencies": {
+    "@biomejs/biome": "^2.3.8",
     "@bufbuild/buf": "^1.52.1",
     "@bufbuild/protoc-gen-es": "^2.3.0",
-    "@biomejs/biome": "^2.3.7",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@commitlint/cz-commitlint": "^20.1.0",
