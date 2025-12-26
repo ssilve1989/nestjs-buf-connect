@@ -7,11 +7,12 @@
   "scripts": {
     "generate": "buf generate",
     "commit": "cz",
-    "lint": "biome lint --diagnostic-level=error .",
+    "build": "pnpm -r build",
     "lint:ci": "biome ci --diagnostic-level=error .",
     "lint:check": "biome check --diagnostic-level=error .",
     "lint:format": "biome format --write .",
-    "test": "vitest --passWithNoTests",
+    "test": "vitest",
+    "test:ci": "vitest run --coverage",
     "prepare": "husky"
   },
   "keywords": [],
@@ -26,6 +27,7 @@
     "@commitlint/cz-commitlint": "^20.2.0",
     "@commitlint/prompt-cli": "^20.2.0",
     "@types/node": "^24.10.1",
+    "@vitest/coverage-v8": "^4.0.16",
     "husky": "^9.1.7",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",

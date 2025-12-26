@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "vitest run"
+    "test": "vitest"
   },
   "keywords": [
     "nestjs",
