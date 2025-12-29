@@ -124,9 +124,9 @@ importers:
       '@nestjs/microservices':
         specifier: ^11.1.9
         version: 11.1.9(@grpc/grpc-js@1.14.3)(@nestjs/common@11.1.9(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.9)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      nestjs-buf-connect:
+      nestjs-connectrpc:
         specifier: workspace:*
-        version: link:../../packages/nestjs-buf-connect
+        version: link:../../packages/nestjs-connectrpc
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -160,7 +160,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/nestjs-buf-connect:
+  packages/nestjs-connectrpc:
     devDependencies:
       '@bufbuild/protobuf':
         specifier: ^2.10.2

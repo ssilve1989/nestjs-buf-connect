@@ -1,6 +1,6 @@
 # Examples
 
-This directory contains example applications demonstrating the `nestjs-buf-connect` library.
+This directory contains example applications demonstrating the `nestjs-connectrpc` library.
 
 ## Available Examples
 
@@ -92,7 +92,7 @@ The examples demonstrate all four gRPC/ConnectRPC streaming patterns:
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                     connect-example                              │
-│                  (NestJS + nestjs-buf-connect)                   │
+│                  (NestJS + nestjs-connectrpc)                   │
 ├─────────────────────────────────────────────────────────────────┤
 │  ExampleService                                                  │
 │    • SayHello (unary)                                            │

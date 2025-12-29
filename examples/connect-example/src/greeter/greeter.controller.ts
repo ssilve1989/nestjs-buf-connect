@@ -5,7 +5,7 @@ import {
   ConnectMethod,
   ConnectServerStreaming,
   ConnectService,
-} from 'nestjs-buf-connect';
+} from 'nestjs-connectrpc';
 import { from, Observable } from 'rxjs';
 import {
   ExampleService,

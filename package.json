@@ -1,6 +1,5 @@
 {
-  "name": "nestjs-buf-connect",
-  "version": "0.0.1",
+  "name": "nestjs-connectrpc-monorepo",
   "description": "",
   "private": true,
   "type": "module",

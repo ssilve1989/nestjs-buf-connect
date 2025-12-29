@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import type { MicroserviceOptions } from '@nestjs/microservices';
-import { ConnectRpcServerStrategy, ServerProtocol } from 'nestjs-buf-connect';
+import { ConnectRpcServerStrategy, ServerProtocol } from 'nestjs-connectrpc';
 import { AppModule } from './app.module.js';
 
 const PORT = Number(process.env.PORT) || 50051;

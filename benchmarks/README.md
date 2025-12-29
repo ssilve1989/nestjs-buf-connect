@@ -227,7 +227,7 @@ Total Iterations: 847735
 ======================================================================
 ```
 
-**Key Insight:** ConnectRPC's gRPC implementation shows **equivalent or slightly better** performance compared to the standard `@grpc/grpc-js` transport, validating that `nestjs-buf-connect` adds minimal overhead.
+**Key Insight:** ConnectRPC's gRPC implementation shows **equivalent or slightly better** performance compared to the standard `@grpc/grpc-js` transport, validating that `nestjs-connectrpc` adds minimal overhead.
 
 ## Results Directory
 
@@ -256,7 +256,7 @@ lsof -i :50052
 k6 needs access to the proto files. Run from the repo root:
 
 ```bash
-cd /path/to/nestjs-buf-connect
+cd /path/to/nestjs-connectrpc
 ./benchmarks/k6/run-all.sh
 ```
 
@@ -281,7 +281,7 @@ kill $(lsof -t -i:50052)
 
 ### ConnectRPC Server
 
-The ConnectRPC server (`examples/connect-example`) uses `nestjs-buf-connect` which:
+The ConnectRPC server (`examples/connect-example`) uses `nestjs-connectrpc` which:
 
 - Wraps `@connectrpc/connect-node`
 - Supports Connect, gRPC, and gRPC-web protocols simultaneously
