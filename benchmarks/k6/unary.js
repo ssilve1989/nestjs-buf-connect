@@ -2,7 +2,7 @@
  * k6 Unary RPC Benchmark
  * 
  * Tests the SayHello unary RPC comparing gRPC implementations SEQUENTIALLY:
- * 1. gRPC protocol through ConnectRPC server (nestjs-buf-connect)
+ * 1. gRPC protocol through ConnectRPC server (nestjs-connectrpc)
  * 2. Standard NestJS gRPC using @grpc/grpc-js
  * 
  * NOTE: Connect protocol (HTTP/2) testing is not included because k6's http
@@ -58,7 +58,7 @@ const PHASE_DURATION = 115; // Total seconds per protocol phase (10+20+40+20+15 
 
 function buildScenarioOptions() {
   const scenarios = {};
-  
+
   if (SCENARIO === 'all' || SCENARIO === 'grpc-connect') {
     scenarios.grpc_connect_warmup = {
       executor: 'constant-vus',
@@ -82,7 +82,7 @@ function buildScenarioOptions() {
       tags: { protocol: 'grpc-connect', phase: 'load' },
     };
   }
-  
+
   if (SCENARIO === 'all' || SCENARIO === 'grpc-standard') {
     const startOffset = SCENARIO === 'all' ? PHASE_DURATION : 0;
     scenarios.grpc_standard_warmup = {
@@ -107,7 +107,7 @@ function buildScenarioOptions() {
       tags: { protocol: 'grpc-standard', phase: 'load' },
     };
   }
-  
+
   return scenarios;
 }
 
@@ -138,7 +138,7 @@ export function setup() {
     console.log('  2. Standard gRPC (115s - 230s)');
   }
   console.log('='.repeat(60));
-  
+
   return {
     connectServer: CONNECT_SERVER,
     grpcStandardServer: GRPC_STANDARD_SERVER,
@@ -164,7 +164,7 @@ export function testGrpcStandard(data) {
 }
 
 // Default function (not used when scenarios have exec specified)
-export default function() {
+export default function () {
   // This won't be called when using scenario-specific exec functions
 }
 
@@ -177,7 +177,7 @@ function testGrpcConnectProtocol(server, request) {
     plaintext: true,
     reflect: false,
   });
-  
+
   const startTime = Date.now();
   const response = grpcConnectClient.invoke(
     'example.v1.ExampleService/SayHello',
@@ -185,16 +185,16 @@ function testGrpcConnectProtocol(server, request) {
     { tags: { protocol: 'grpc-connect' } }
   );
   const duration = Date.now() - startTime;
-  
+
   grpcConnectLatency.add(duration);
-  
+
   const success = check(response, {
     'grpc-connect: status is OK': (r) => r && r.status === grpc.StatusOK,
     'grpc-connect: has message': (r) => r && r.message && r.message.message && r.message.message.includes('Hello'),
   });
-  
+
   grpcConnectErrorRate.add(!success);
-  
+
   grpcConnectClient.close();
 }
 
@@ -207,7 +207,7 @@ function testGrpcStandardProtocol(server, request) {
     plaintext: true,
     reflect: false,
   });
-  
+
   const startTime = Date.now();
   const response = grpcStandardClient.invoke(
     'example.v1.ExampleService/SayHello',
@@ -215,16 +215,16 @@ function testGrpcStandardProtocol(server, request) {
     { tags: { protocol: 'grpc-standard' } }
   );
   const duration = Date.now() - startTime;
-  
+
   grpcStandardLatency.add(duration);
-  
+
   const success = check(response, {
     'grpc-standard: status is OK': (r) => r && r.status === grpc.StatusOK,
     'grpc-standard: has message': (r) => r && r.message && r.message.message && r.message.message.includes('Hello'),
   });
-  
+
   grpcStandardErrorRate.add(!success);
-  
+
   grpcStandardClient.close();
 }
 
@@ -238,7 +238,7 @@ export function teardown(data) {
 export function handleSummary(data) {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const filename = `results/unary-${timestamp}.json`;
-  
+
   // Create summary object with per-protocol metrics
   const summary = {
     timestamp: new Date().toISOString(),
@@ -260,7 +260,7 @@ export function handleSummary(data) {
     },
     iterations: data.metrics.iterations ? data.metrics.iterations.values.count : 0,
   };
-  
+
   return {
     [filename]: JSON.stringify(summary, null, 2),
     'stdout': textSummary(data, { indent: ' ', enableColors: true }),
@@ -270,7 +270,7 @@ export function handleSummary(data) {
 function extractMetrics(data, metricName) {
   const metric = data.metrics[metricName];
   if (!metric) return null;
-  
+
   return {
     avg: metric.values.avg,
     min: metric.values.min,
@@ -288,20 +288,20 @@ function textSummary(data, options) {
   output += '='.repeat(70) + '\n';
   output += '  UNARY RPC BENCHMARK: gRPC via ConnectRPC vs Standard gRPC\n';
   output += '='.repeat(70) + '\n\n';
-  
+
   output += 'Note: Each implementation was tested in ISOLATION (not concurrently)\n\n';
-  
+
   // Protocol comparison table
   output += 'Latency Comparison (ms):\n';
   output += '-'.repeat(70) + '\n';
   output += formatRow(['Implementation', 'Avg', 'P50', 'P90', 'P95', 'P99', 'Max']);
   output += '-'.repeat(70) + '\n';
-  
+
   const protocols = [
     { name: 'gRPC (ConnectRPC)', metric: 'grpc_connect_latency', errors: 'grpc_connect_errors' },
     { name: 'gRPC (Standard)', metric: 'grpc_standard_latency', errors: 'grpc_standard_errors' },
   ];
-  
+
   for (const proto of protocols) {
     const m = data.metrics[proto.metric];
     if (m) {
@@ -316,9 +316,9 @@ function textSummary(data, options) {
       ]);
     }
   }
-  
+
   output += '-'.repeat(70) + '\n\n';
-  
+
   // Error rates per protocol
   output += 'Error Rates:\n';
   for (const proto of protocols) {
@@ -329,15 +329,15 @@ function textSummary(data, options) {
     }
   }
   output += '\n';
-  
+
   // Summary stats
   if (data.metrics.iterations) {
     const iters = data.metrics.iterations.values;
     output += `Total Iterations: ${iters.count}\n`;
   }
-  
+
   output += '\n' + '='.repeat(70) + '\n';
-  
+
   return output;
 }
 

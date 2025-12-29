@@ -4,7 +4,7 @@
 #
 # ghz is a gRPC benchmarking tool that properly supports streaming RPCs.
 # This script benchmarks server streaming performance between:
-#   - ConnectRPC server (nestjs-buf-connect)
+#   - ConnectRPC server (nestjs-connectrpc)
 #   - Standard NestJS gRPC server (@grpc/grpc-js)
 #
 # Prerequisites:
@@ -66,7 +66,7 @@ print_banner() {
   echo "║       Server Streaming Benchmark (ghz)                             ║"
   echo "╠════════════════════════════════════════════════════════════════════╣"
   echo "║  Comparing:                                                        ║"
-  echo "║    • ConnectRPC (gRPC protocol) - nestjs-buf-connect               ║"
+  echo "║    • ConnectRPC (gRPC protocol) - nestjs-connectrpc               ║"
   echo "║    • Standard NestJS gRPC - @grpc/grpc-js                          ║"
   echo "╚════════════════════════════════════════════════════════════════════╝"
   echo -e "${NC}"

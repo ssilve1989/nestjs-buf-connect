@@ -1,6 +1,6 @@
 # Connect Example
 
-This example demonstrates how to use `nestjs-buf-connect` to create a NestJS microservice with ConnectRPC/gRPC support.
+This example demonstrates how to use `nestjs-connectrpc` to create a NestJS microservice with ConnectRPC/gRPC support.
 
 ## Features
 
@@ -34,7 +34,7 @@ pnpm generate
 ### 3. Build the library and example
 
 ```bash
-cd packages/nestjs-buf-connect && pnpm build
+cd packages/nestjs-connectrpc && pnpm build
 cd ../../examples/connect-example && pnpm build
 ```
 

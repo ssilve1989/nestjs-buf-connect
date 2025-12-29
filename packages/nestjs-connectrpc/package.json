@@ -1,7 +1,7 @@
 {
-  "name": "nestjs-buf-connect",
-  "version": "1.0.0",
-  "description": "ConnectRPC transport strategy for NestJS microservices",
+  "name": "nestjs-connectrpc",
+  "version": "0.0.1",
+  "description": "ConnectRPC transport strategy for NestJS microservices using @connectrpc/connect",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -31,7 +31,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ssilve1989/nestjs-buf-connect.git"
+    "url": "git+https://github.com/ssilve1989/nestjs-connectrpc.git"
   },
   "author": "Steven Silvestri <steven.m.silvestri@gmail.com>",
   "license": "MIT",

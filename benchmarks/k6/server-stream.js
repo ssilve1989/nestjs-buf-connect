@@ -2,7 +2,7 @@
  * k6 Server Streaming RPC Benchmark
  * 
  * Tests the ServerStream RPC comparing gRPC implementations SEQUENTIALLY:
- * 1. gRPC protocol through ConnectRPC server (nestjs-buf-connect)
+ * 1. gRPC protocol through ConnectRPC server (nestjs-connectrpc)
  * 2. Standard NestJS gRPC using @grpc/grpc-js
  * 
  * NOTE: Connect protocol (HTTP/2) testing is not included because k6's http
@@ -66,7 +66,7 @@ const PHASE_DURATION = 105; // Total seconds per protocol phase
 
 function buildScenarioOptions() {
   const scenarios = {};
-  
+
   if (SCENARIO === 'all' || SCENARIO === 'grpc-connect') {
     scenarios.grpc_connect_warmup = {
       executor: 'constant-vus',
@@ -90,7 +90,7 @@ function buildScenarioOptions() {
       tags: { protocol: 'grpc-connect', phase: 'load' },
     };
   }
-  
+
   if (SCENARIO === 'all' || SCENARIO === 'grpc-standard') {
     const startOffset = SCENARIO === 'all' ? PHASE_DURATION : 0;
     scenarios.grpc_standard_warmup = {
@@ -115,7 +115,7 @@ function buildScenarioOptions() {
       tags: { protocol: 'grpc-standard', phase: 'load' },
     };
   }
-  
+
   return scenarios;
 }
 
@@ -146,7 +146,7 @@ export function setup() {
     console.log('  2. Standard gRPC (105s - 210s)');
   }
   console.log('='.repeat(60));
-  
+
   return {
     connectServer: CONNECT_SERVER,
     grpcStandardServer: GRPC_STANDARD_SERVER,
@@ -179,7 +179,7 @@ export function testGrpcStandard(data) {
 }
 
 // Default function (not used when scenarios have exec specified)
-export default function() {}
+export default function () { }
 
 /**
  * Test gRPC server streaming through ConnectRPC server
@@ -190,21 +190,21 @@ function testGrpcConnectServerStream(server, request) {
     plaintext: true,
     reflect: false,
   });
-  
+
   const startTime = Date.now();
-  
+
   const stream = grpcConnectClient.invoke(
     'example.v1.ExampleService/ServerStream',
     request,
     { tags: { protocol: 'grpc-connect-stream' } }
   );
-  
+
   const duration = Date.now() - startTime;
   grpcConnectStreamDuration.add(duration);
-  
+
   let messageCount = 0;
   let success = false;
-  
+
   if (stream && stream.status === grpc.StatusOK) {
     if (Array.isArray(stream.message)) {
       messageCount = stream.message.length;
@@ -213,16 +213,16 @@ function testGrpcConnectServerStream(server, request) {
     }
     success = messageCount > 0;
   }
-  
+
   grpcConnectMessages.add(messageCount);
-  
+
   check(stream, {
     'grpc-connect-stream: status is OK': (r) => r && r.status === grpc.StatusOK,
     'grpc-connect-stream: received messages': () => messageCount > 0,
   });
-  
+
   grpcConnectErrorRate.add(!success);
-  
+
   grpcConnectClient.close();
 }
 
@@ -235,21 +235,21 @@ function testGrpcStandardServerStream(server, request) {
     plaintext: true,
     reflect: false,
   });
-  
+
   const startTime = Date.now();
-  
+
   const stream = grpcStandardClient.invoke(
     'example.v1.ExampleService/ServerStream',
     request,
     { tags: { protocol: 'grpc-standard-stream' } }
   );
-  
+
   const duration = Date.now() - startTime;
   grpcStandardStreamDuration.add(duration);
-  
+
   let messageCount = 0;
   let success = false;
-  
+
   if (stream && stream.status === grpc.StatusOK) {
     if (Array.isArray(stream.message)) {
       messageCount = stream.message.length;
@@ -258,16 +258,16 @@ function testGrpcStandardServerStream(server, request) {
     }
     success = messageCount > 0;
   }
-  
+
   grpcStandardMessages.add(messageCount);
-  
+
   check(stream, {
     'grpc-standard-stream: status is OK': (r) => r && r.status === grpc.StatusOK,
     'grpc-standard-stream: received messages': () => messageCount > 0,
   });
-  
+
   grpcStandardErrorRate.add(!success);
-  
+
   grpcStandardClient.close();
 }
 
@@ -281,7 +281,7 @@ export function teardown(data) {
 export function handleSummary(data) {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const filename = `results/server-stream-${timestamp}.json`;
-  
+
   const summary = {
     timestamp: new Date().toISOString(),
     scenario: SCENARIO,
@@ -305,7 +305,7 @@ export function handleSummary(data) {
     },
     iterations: data.metrics.iterations ? data.metrics.iterations.values.count : 0,
   };
-  
+
   return {
     [filename]: JSON.stringify(summary, null, 2),
     'stdout': textSummary(data, { indent: ' ', enableColors: true }),
@@ -315,7 +315,7 @@ export function handleSummary(data) {
 function extractMetrics(data, metricName) {
   const metric = data.metrics[metricName];
   if (!metric) return null;
-  
+
   return {
     avg: metric.values.avg,
     min: metric.values.min,
@@ -333,21 +333,21 @@ function textSummary(data, options) {
   output += '='.repeat(70) + '\n';
   output += '  SERVER STREAMING: gRPC via ConnectRPC vs Standard gRPC\n';
   output += '='.repeat(70) + '\n\n';
-  
+
   output += 'Note: Each implementation was tested in ISOLATION (not concurrently)\n';
   output += `Expected messages per stream: ${MESSAGE_COUNT}\n\n`;
-  
+
   // Protocol comparison table
   output += 'Stream Completion Time (ms):\n';
   output += '-'.repeat(70) + '\n';
   output += formatRow(['Implementation', 'Avg', 'P50', 'P90', 'P95', 'P99', 'Max']);
   output += '-'.repeat(70) + '\n';
-  
+
   const protocols = [
     { name: 'gRPC (ConnectRPC)', metric: 'grpc_connect_stream_duration', errors: 'grpc_connect_errors' },
     { name: 'gRPC (Standard)', metric: 'grpc_standard_stream_duration', errors: 'grpc_standard_errors' },
   ];
-  
+
   for (const proto of protocols) {
     const m = data.metrics[proto.metric];
     if (m) {
@@ -362,25 +362,25 @@ function textSummary(data, options) {
       ]);
     }
   }
-  
+
   output += '-'.repeat(70) + '\n\n';
-  
+
   // Message counts
   output += 'Messages Received:\n';
   output += '-'.repeat(40) + '\n';
-  
+
   const msgMetrics = [
     { name: 'gRPC (ConnectRPC)', metric: 'grpc_connect_messages_received' },
     { name: 'gRPC (Standard)', metric: 'grpc_standard_messages_received' },
   ];
-  
+
   for (const m of msgMetrics) {
     const count = data.metrics[m.metric]?.values.count || 0;
     output += `  ${m.name.padEnd(18)}: ${count}\n`;
   }
-  
+
   output += '-'.repeat(40) + '\n\n';
-  
+
   // Error rates per protocol
   output += 'Error Rates:\n';
   for (const proto of protocols) {
@@ -391,15 +391,15 @@ function textSummary(data, options) {
     }
   }
   output += '\n';
-  
+
   // Summary stats
   if (data.metrics.iterations) {
     const iters = data.metrics.iterations.values;
     output += `Total Iterations: ${iters.count}\n`;
   }
-  
+
   output += '\n' + '='.repeat(70) + '\n';
-  
+
   return output;
 }
 
